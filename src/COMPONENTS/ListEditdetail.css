@@ -1,0 +1,12 @@
+.contain{
+    height: 100vh;
+}
+.bgs{
+    background: pink;
+}
+.bge{
+    background: rgb(248, 248, 112);
+}
+.App{
+    text-align: center;
+}
