@@ -1,4 +1,6 @@
 import React from "react";
+import "./login.css";
+import "../../GlobalCssSlider.css";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 export const Login = () => {
@@ -19,7 +21,7 @@ export const Login = () => {
         </Link>
       </div>
       <div className="flex">
-        <Link className="link" to={"/studentlogin"}>
+        <Link className="link" to={"/studentlogin?rollno=100"}>
           <Button className="bt" variant="contained" color="info">
             Student Login
           </Button>

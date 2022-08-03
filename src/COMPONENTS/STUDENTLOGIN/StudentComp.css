@@ -1,0 +1,11 @@
+.color {
+  background-color: aliceblue;
+}
+.color2 {
+  color: aliceblue;
+}
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
