@@ -9,6 +9,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooks } from "../ACTIONS/actions";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,36 +33,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export const BookList = () => {
-  const [book, setbook] = useState([]);
-  useEffect(async () => {
-    const res = await fetch("http://localhost:4000/book/list");
-    const response = await res.json();
-    setbook(response);
+  const dispatch = useDispatch();
+  const books = useSelector((state) => state.bookList);
+  useEffect(() => {
+    dispatch(fetchBooks());
   }, []);
 
   return (
     <TableContainer component={Paper}>
       <Table>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>BOOKNAME</StyledTableCell>
-            <StyledTableCell>Author</StyledTableCell>
-            <StyledTableCell>GENRE</StyledTableCell>
-            <StyledTableCell>QTY</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        {/* <Scroll> */}
-        <TableBody>
-          {book.map((book, i) => (
-            <StyledTableRow key={i}>
-              <StyledTableCell>{book.bookname}</StyledTableCell>
-              <StyledTableCell>{book.author}</StyledTableCell>
-              <StyledTableCell>{book.genre}</StyledTableCell>
-              <StyledTableCell>{book.availableqty}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-        {/* </Scroll> */}
+        <div className="width">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>BOOKNAME</StyledTableCell>
+              <StyledTableCell>Author</StyledTableCell>
+              <StyledTableCell>GENRE</StyledTableCell>
+              <StyledTableCell>QTY</StyledTableCell>
+            </TableRow>
+          </TableHead>
+        </div>
+        <Scroll>
+          <div className="scrollbook">
+            <TableBody>
+              {books.map((book, i) => (
+                <StyledTableRow key={i}>
+                  <StyledTableCell>{book.bookname}</StyledTableCell>
+                  <StyledTableCell>{book.author}</StyledTableCell>
+                  <StyledTableCell>{book.genre}</StyledTableCell>
+                  <StyledTableCell>{book.availableqty}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </div>
+        </Scroll>
       </Table>
     </TableContainer>
   );

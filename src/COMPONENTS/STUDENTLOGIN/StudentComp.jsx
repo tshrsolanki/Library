@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStudentDetails } from "../../ACTIONS/actions";
+
+import { Booksborrowed } from "./Booksborrowed";
 import { Details } from "./Details";
-import Scroll from "../../Scroll";
 import { StudentBooks } from "./StudentBooks";
 import "./StudentComp.css";
 import "../../GlobalCssSlider.css";
@@ -38,70 +41,135 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-const change = () => {};
-
 export const StudentComp = () => {
+  const temp = {
+    firstname: "Loading",
+    lastname: "Loading",
+    studentid: "Loading",
+  };
   const [value, setValue] = useState(0);
-  const [Val, setVal] = useState(true);
-  const [student, setStudent] = useState({});
+  const [Val2, setVal2] = useState(true);
+  const [Val1, setVal1] = useState(true);
+  const [student, setStudent] = useState(temp);
   const [params] = useSearchParams();
+  const [issuebooks, setissuebooks] = useState([]);
+  const [returnbooks, setreturnbooks] = useState([]);
   const rollno = params.get("rollno");
-  console.log(student);
+  const dispatch = useDispatch();
+  const studentData = useSelector((state) => state.studentData);
 
   useEffect(() => {
-    console.log("HH");
-    fetch(`http://localhost:4000/student/${rollno}`)
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        console.log(data[0]);
-        setStudent(data[0]);
-      });
+    dispatch(fetchStudentDetails(rollno));
   }, []);
+
+  const returnbook = async () => {
+    if (returnbooks.length) {
+      const res = await fetch(
+        `http://localhost:4000/student/returnbooks/${rollno}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            returnbooks: returnbooks,
+            count: student.count + returnbooks.length,
+          }),
+        }
+      );
+      setreturnbooks([]);
+      const resp = await res.json();
+      setStudent(resp[0]);
+    }
+  };
+  const test = () => {
+    console.log("LL");
+  };
+  const change = async () => {
+    if (issuebooks.length) {
+      const res = await fetch(
+        `http://localhost:4000/student/issuebooks/${rollno}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            issuebooks: issuebooks,
+            count: student.count - issuebooks.length,
+          }),
+        }
+      );
+      setissuebooks([]);
+      const resp = await res.json();
+      setStudent(resp[0]);
+    }
+  };
+
   const handleChange = (event, newValue) => {
     if (newValue === 2) {
-      setVal(false);
+      setVal2(false);
     } else {
-      setVal(true);
+      setVal2(true);
+    }
+    if (newValue === 1) {
+      setVal1(false);
+    } else {
+      setVal1(true);
     }
     setValue(newValue);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      <div className="color">
+      <div className="studentcompcolor">
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Details" />
+
             <Tab label="Books Borrowed" />
+
             <Tab label="Book List" />
             <Button
+              onClick={returnbook}
+              disabled={Val1}
+              variant="contained"
+              color="secondary"
+              sx={{ margin: 2 }}
+            >
+              Return Books
+            </Button>
+            <Button
               onClick={change}
-              disabled={Val}
+              disabled={Val2}
               variant="contained"
               color="success"
               sx={{ margin: 2 }}
             >
               Issue Books
             </Button>
-            <div className="text">{`Available books to issue ${student.count}`}</div>
+
+            <div className="studentcomptext">{`Available books to issue : ${studentData.count}`}</div>
           </Tabs>
         </Box>
       </div>
 
-      <div className="color2">
-        <Scroll>
-          <TabPanel value={value} index={0}>
-            <Details student={student} />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <StudentBooks student={student} />
-          </TabPanel>
-        </Scroll>
+      <div className="studentcompcolor2">
+        {/* <Scroll> */}
+        <TabPanel value={value} index={0}>
+          <Details studentData={studentData} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Booksborrowed
+            student={student}
+            returnbooks={returnbooks}
+            setreturnbooks={setreturnbooks}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <StudentBooks
+            student={student}
+            setissuebooks={setissuebooks}
+            issuebooks={issuebooks}
+          />
+        </TabPanel>
+        {/* </Scroll> */}
       </div>
     </Box>
   );

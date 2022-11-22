@@ -1,11 +1,14 @@
+import React, { useEffect, useState } from "react";
 import "./Details.css";
 
-export const Details = ({ studentData }) => {
+export const Details = (props) => {
+  useEffect(() => {}, []);
+
   return (
     <div className="details">
-      <div>Firstname:{studentData.firstname} </div>
-      <div>Lastname: {studentData.lastname}</div>
-      <div>Rollno:{studentData.studentid} </div>
+      <div>Firstname: </div>
+      <div>Lastname: </div>
+      <div>Rollno: </div>
       <div>Moblie no.:</div>
     </div>
   );

@@ -1,0 +1,25 @@
+.addbooksaddbooks {
+  display: flex;
+  justify-content: center;
+  width: 40vw;
+  height: 70vh;
+  background-color: aliceblue;
+  margin-top: 4vh;
+  margin-left: 60vh;
+  margin-right: 60vh;
+  border: 5px solid palevioletred;
+  border-radius: 10px;
+}
+.addbooksbookname {
+  margin: 3vh;
+}
+.addbooksbutton1 {
+  width: 100%;
+  margin-top: 2vh;
+}
+.addbooksb1 {
+  float: left;
+}
+.addbooksb2 {
+  float: right;
+}
