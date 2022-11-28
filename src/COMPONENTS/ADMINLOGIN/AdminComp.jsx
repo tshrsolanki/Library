@@ -14,6 +14,8 @@ import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { useDispatch } from "react-redux";
+import { fetchPendingReturns } from "../../ACTIONS/actions";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -49,6 +51,7 @@ export const AdminComp = () => {
   const [books, setbooks] = useState([]);
   const [fet, setfet] = useState(0);
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   // console.log(books);
 
   const handleClose = (event, reason) => {
@@ -98,6 +101,7 @@ export const AdminComp = () => {
     });
   };
   useEffect(() => {
+    dispatch(fetchPendingReturns());
     // fetch(`http://localhost:4000/student/${rollno}`)
     //   .then((data) => {
     //     return data.json();

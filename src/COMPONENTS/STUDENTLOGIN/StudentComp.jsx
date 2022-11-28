@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStudentDetails } from "../../ACTIONS/actions";
+import {
+  fetchStudentDetails,
+  fetchStudentBookBorrowed,
+  fetchBooks,
+  emptyReturnBooks,
+  emptyIssueBooks,
+  setStudentDetails,
+} from "../../ACTIONS/actions";
 
 import { Booksborrowed } from "./Booksborrowed";
 import { Details } from "./Details";
@@ -42,63 +49,62 @@ TabPanel.propTypes = {
 };
 
 export const StudentComp = () => {
-  const temp = {
-    firstname: "Loading",
-    lastname: "Loading",
-    studentid: "Loading",
-  };
   const [value, setValue] = useState(0);
   const [Val2, setVal2] = useState(true);
   const [Val1, setVal1] = useState(true);
-  const [student, setStudent] = useState(temp);
   const [params] = useSearchParams();
-  const [issuebooks, setissuebooks] = useState([]);
-  const [returnbooks, setreturnbooks] = useState([]);
   const rollno = params.get("rollno");
   const dispatch = useDispatch();
   const studentData = useSelector((state) => state.studentData);
 
+  const returnBooks = useSelector((state) => state.returnBooks);
+  const issueBooks = useSelector((state) => state.issueBooks);
+  console.log("studentcomp");
   useEffect(() => {
+    console.log("effect");
     dispatch(fetchStudentDetails(rollno));
   }, []);
+  useEffect(() => {
+    console.log("effect2");
+    dispatch(fetchBooks());
+    dispatch(fetchStudentBookBorrowed(rollno));
+  }, [studentData.count]);
 
-  const returnbook = async () => {
-    if (returnbooks.length) {
+  const returnBookHandler = async () => {
+    if (returnBooks.length) {
+      console.log("fetch");
       const res = await fetch(
         `http://localhost:4000/student/returnbooks/${rollno}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            returnbooks: returnbooks,
-            count: student.count + returnbooks.length,
+            returnbooks: returnBooks,
+            count: studentData.count + returnBooks.length,
           }),
         }
       );
-      setreturnbooks([]);
-      const resp = await res.json();
-      setStudent(resp[0]);
+      const [resp] = await res.json();
+      dispatch(setStudentDetails(resp));
+      dispatch(emptyReturnBooks());
     }
   };
-  const test = () => {
-    console.log("LL");
-  };
-  const change = async () => {
-    if (issuebooks.length) {
+  const issueBookHandler = async () => {
+    if (issueBooks.length) {
       const res = await fetch(
         `http://localhost:4000/student/issuebooks/${rollno}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            issuebooks: issuebooks,
-            count: student.count - issuebooks.length,
+            issuebooks: issueBooks,
+            count: studentData.count - issueBooks.length,
           }),
         }
       );
-      setissuebooks([]);
-      const resp = await res.json();
-      setStudent(resp[0]);
+      const [resp] = await res.json();
+      dispatch(emptyIssueBooks());
+      dispatch(setStudentDetails(resp));
     }
   };
 
@@ -127,7 +133,7 @@ export const StudentComp = () => {
 
             <Tab label="Book List" />
             <Button
-              onClick={returnbook}
+              onClick={returnBookHandler}
               disabled={Val1}
               variant="contained"
               color="secondary"
@@ -136,7 +142,7 @@ export const StudentComp = () => {
               Return Books
             </Button>
             <Button
-              onClick={change}
+              onClick={issueBookHandler}
               disabled={Val2}
               variant="contained"
               color="success"
@@ -156,18 +162,10 @@ export const StudentComp = () => {
           <Details studentData={studentData} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Booksborrowed
-            student={student}
-            returnbooks={returnbooks}
-            setreturnbooks={setreturnbooks}
-          />
+          <Booksborrowed />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <StudentBooks
-            student={student}
-            setissuebooks={setissuebooks}
-            issuebooks={issuebooks}
-          />
+          <StudentBooks studentData={studentData} />
         </TabPanel>
         {/* </Scroll> */}
       </div>

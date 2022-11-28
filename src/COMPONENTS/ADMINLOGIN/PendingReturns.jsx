@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import "./PendingReturns.css";
 
-export const PendingReturns = (props) => {
-  const [detail, setdetail] = useState([]);
-
-  // const change = (e, id) => {};
-  useEffect(() => {
-    fetch(`http://localhost:4000/admin/pendingreturns`)
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setdetail(data);
-      });
-  }, []);
+export const PendingReturns = () => {
+  const pendingBooks = useSelector((state) => state.pendingReturns);
 
   return (
     <table>
@@ -23,14 +13,14 @@ export const PendingReturns = (props) => {
         <th style={{ width: "25%" }}>BORROW DATE</th>
         <th style={{ width: "25%" }}>RETURN DATE</th>
       </tr>
-      {detail.length === 0 ? (
+      {pendingBooks.length === 0 ? (
         <div className="borrowedadmin">
           <p>
             <strong> No Pending Returns </strong>
           </p>
         </div>
       ) : (
-        detail.map((val, key) => (
+        pendingBooks.map((val, key) => (
           <tr key={key}>
             <td>{val.student_id}</td>
             <td>{val.book_id}</td>

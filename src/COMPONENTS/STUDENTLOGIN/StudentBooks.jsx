@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import "./StudentBooks.css";
 import Scroll1 from "../../Scroll1";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  decIssueBooks,
-  fetchBooks,
-  fetchStudentBookBorrowed,
-  incIssueBooks,
-} from "../../ACTIONS/actions";
+import { decIssueBooks, incIssueBooks } from "../../ACTIONS/actions";
 
 export const StudentBooks = (props) => {
-  // const [bookborrowed, setbookborrowed] = useState([]);
-  const [num, setnum] = useState(props.student.count);
-  const [params] = useSearchParams();
-  const rollno = params.get("rollno");
-
-  const dispatch = useDispatch();
-  const books = useSelector((state) => state.bookList);
-  const booksborrowed = useSelector((state) => state.studentBooksBorrowed);
-  console.log(
-    `file: StudentBooks.jsx ~ line 22 ~ booksborrowed`,
-    booksborrowed
+  const [num, setnum] = useState(props.studentData.count);
+  const bookList = useSelector((state) => state.bookList);
+  const studentBooksBorrowed = useSelector(
+    (state) => state.studentBooksBorrowed
   );
-  console.log(`file: StudentBooks.jsx ~ line 17 ~ books`, books);
+
+  console.log("studentbooks");
+  const dispatch = useDispatch();
   const handleChange = (e, id) => {
     if (e.target.checked) {
       const n = num - 1;
@@ -39,12 +28,6 @@ export const StudentBooks = (props) => {
         }
       }
     } else {
-      // props.setissuebooks(
-      //   props.issuebooks.filter((i) => {
-      //     return i !== id;
-      //   })
-
-      // );
       dispatch(decIssueBooks(id));
 
       if (num === 0) {
@@ -53,17 +36,13 @@ export const StudentBooks = (props) => {
           if (!checkButton[i].checked)
             checkButton[i].removeAttribute("disabled");
         }
-        // const n = num + 1;
-        // setnum(n);
       }
       const n = num + 1;
       setnum(n);
     }
   };
   useEffect(() => {
-    if (!books.length) dispatch(fetchBooks());
-
-    if (props.student.count === 0) {
+    if (num === 0) {
       const checkButton = document.querySelectorAll(".check");
       for (let i = 0; i < checkButton.length; i++) {
         checkButton[i].setAttribute("disabled", "");
@@ -73,16 +52,7 @@ export const StudentBooks = (props) => {
     for (let i = 0; i < checkButton.length; i++) {
       checkButton[i].checked = false;
     }
-
-    dispatch(fetchStudentBookBorrowed(rollno));
-    // fetch(`http://localhost:4000/student/borrowedbookid/${rollno}`)
-    //   .then((data) => {
-    //     return data.json();
-    //   })
-    //   .then((data) => {
-    //     setbookborrowed(data);
-    //   });
-  }, [props.student.count]);
+  }, [props.studentData.count]);
 
   return (
     <>
@@ -94,13 +64,13 @@ export const StudentBooks = (props) => {
           <th className="studentbooksgenre">GENRE</th>
           <th className="studentbooksqty">QTY</th>
           <th className="cstudentbooksell">
-            {num}/{props.student.count}
+            {num}/{5}
           </th>
         </tr>
       </table>
       <Scroll1>
         <table>
-          {books.map((book, key) => {
+          {bookList.map((book, key) => {
             return (
               <tr key={key}>
                 <td>{book.bookid}</td>
@@ -113,7 +83,9 @@ export const StudentBooks = (props) => {
                     <div>
                       <input type="checkbox" disabled />
                     </div>
-                  ) : booksborrowed.indexOf(Number(book.bookid)) === -1 ? (
+                  ) : studentBooksBorrowed.findIndex((detail) => {
+                      return detail.bookid === book.bookid;
+                    }) === -1 ? (
                     <div>
                       <input
                         type="checkbox"

@@ -6,7 +6,6 @@ const initailStUdentData = {
   studentid: "Loading",
   count: "loading",
 };
-const initialIssueBooks = [];
 
 const initailStudentBooksBorrowed = [];
 
@@ -27,26 +26,6 @@ export const studentBooksBorrowed = (
   switch (action.type) {
     case actions.SET_STUDENT_BOOKSBORROWED:
       return action.payload;
-
-    default:
-      return state;
-  }
-};
-
-export const issueBooks = (state = initialIssueBooks, action) => {
-  switch (action.type) {
-    case actions.SET_ISSUEBOOKS: {
-      return action.payload;
-    }
-    case actions.INC_ISSUEBOOKS: {
-      return [...state, action.payload];
-    }
-    case actions.DEC_ISSUEBOOKS: {
-      const newBooks = state.filter((id) => {
-        return id !== action.payload;
-      });
-      return newBooks;
-    }
 
     default:
       return state;
