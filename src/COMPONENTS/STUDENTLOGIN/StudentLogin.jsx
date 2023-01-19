@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Fab from "@mui/material/Fab";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./StudentLogin.css";
+import { url } from "../../UTILS/constant";
 export const StudentLogin = () => {
   const [rollno, setRollno] = useState("");
   const [pass, setPass] = useState("");
