@@ -2,7 +2,8 @@ import { actions, url } from "../UTILS/constant";
 
 export const fetchStudentDetails = (rollno) => {
   return async (dispatch) => {
-    const res = await fetch(`${url}/${rollno}`);
+    console.log(url);
+    const res = await fetch(`${url}/student/${rollno}`);
 
     const data = await res.json();
     dispatch({ type: actions.SET_STUDENT_DETAILS, payload: data });

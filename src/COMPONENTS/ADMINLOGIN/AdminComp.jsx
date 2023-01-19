@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { PendingReturns } from "./PendingReturns";
-import { Details } from "./Details";
 import Scroll from "../../Scroll";
 import { EditBookList } from "./EditBookList";
 import { AddBooks } from "./AddBooks";
@@ -126,6 +125,7 @@ export const AdminComp = () => {
               color="success"
               sx={{ margin: 2 }}
               fullWidth
+              onClick={update}
             >
               UPDATE BOOKS
             </Button>
