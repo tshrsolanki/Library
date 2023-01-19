@@ -1,0 +1,6 @@
+.scroll {
+  overflow-y: scroll;
+  /* border: 2px solid gray; */
+  height: 89vh;
+  /* width: 100%; */
+}

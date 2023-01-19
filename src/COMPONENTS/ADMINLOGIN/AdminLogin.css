@@ -1,0 +1,93 @@
+.adminloginbtn1 {
+  color: rgb(231, 220, 220) !important;
+  width: 100px;
+  height: 40px;
+  font-size: 13pt;
+  font-family: tahoma;
+  margin-top: 25px;
+  margin-left: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ee7b7b;
+  border-radius: 10px;
+}
+.adminloginback {
+  position: static;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.adminloginjoinOuterContainer {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  align-items: center;
+  background-color: #1a1a1d;
+}
+
+.adminloginjoinInnerContainer {
+  width: 30%;
+}
+
+.adminloginjoinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+  font-size: 15pt;
+}
+
+.adminloginheading {
+  color: white;
+  font-size: 2.9em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid white;
+  margin-bottom: 10px;
+}
+#adminloginbutt {
+  cursor: pointer;
+}
+.adminloginbutton {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2979ff;
+
+  padding: 12px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  width: 100%;
+  border: 5px solid white;
+  font-size: 15pt;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .joinOuterContainer {
+    height: 100%;
+  }
+
+  .joinInnerContainer {
+    width: 90%;
+  }
+}
+.adminloginmessage {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  /* height: 10vh; */
+  align-items: center;
+  font-size: 15pt;
+  color: #e24444;
+  /* background-color: #d84c4c; */
+}
+button:focus {
+  outline: 0;
+}

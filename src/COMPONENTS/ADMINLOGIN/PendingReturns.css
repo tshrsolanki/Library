@@ -1,0 +1,10 @@
+.borrowedadmin {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 454%;
+  height: 10vh;
+  background-color: aliceblue;
+  border-radius: 22px;
+  margin-top: 0.7vh;
+}

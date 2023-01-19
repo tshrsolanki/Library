@@ -1,0 +1,26 @@
+.addbooks-subbox {
+  background-color: aliceblue;
+  margin-top: 10px;
+  width: 500px;
+  height: 410px;
+  border: 5px solid palevioletred;
+  border-radius: 10px;
+}
+.addbooksbookname {
+  margin: 15px;
+}
+.addbooksbutton1 {
+  width: 100%;
+  margin-top: 20px;
+}
+.addbooksb1 {
+  float: left;
+}
+.addbooksb2 {
+  float: right;
+}
+.addbooks-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

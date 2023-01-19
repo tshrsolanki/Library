@@ -1,0 +1,15 @@
+/* .bt {
+  width: 90%;
+  height: 100px;
+} */
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.link {
+  text-align: center;
+  width: 100%;
+  text-decoration: none;
+}
